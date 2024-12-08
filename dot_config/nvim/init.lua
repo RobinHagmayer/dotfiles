@@ -6,3 +6,6 @@ vim.g.maplocalleader = " "
 require("options")
 require("keymaps")
 require("autocommands")
+
+-- Bootstrap lazy plugin manager.
+require("lazy-bootstrap")

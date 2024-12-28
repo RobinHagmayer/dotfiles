@@ -14,7 +14,6 @@ return {
     dependencies = {
       { "williamboman/mason.nvim", opts = {} },
       "williamboman/mason-lspconfig.nvim",
-      "WhoIsSethDaniel/mason-tool-installer.nvim"
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -37,6 +36,8 @@ return {
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+          -- Highlight references of the word under the cursor.
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
             local highlight_augroup = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -66,7 +67,7 @@ return {
             end, '[T]oggle Inlay [H]ints')
           end
 
-          -- Disable hover for ruff
+          -- Disable hover for ruff.
           if client and client.name == 'ruff' then
             client.server_capabilities.hoverProvider = false
           end
@@ -76,7 +77,6 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      local util = require 'lspconfig.util'
       local servers = {
         lua_ls = {
           settings = {
@@ -101,7 +101,7 @@ return {
         },
 
         ruff = {
-          root_dir = util.root_pattern('pyproject.toml', 'ruff.toml', '.ruff.toml', 'main.py') or util.find_git_ancestor(),
+          root_dir = vim.fs.root(0, { '.git', 'pyproject.toml', 'setup.py', 'requirements.txt' }),
         },
       }
 
@@ -111,9 +111,10 @@ return {
       -- vim.list_extend(ensure_installed, {
       --   'stylua', -- Used to format Lua code
       -- })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        ensure_installed = ensure_installed,
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}

@@ -92,10 +92,10 @@ return {
           settings = {
             basedpyright = {
               disableOrganizeImports = true,
-              analysis = {
-                ignore = { '*' },
-                typeCheckingMode = 'off',
-              },
+              -- analysis = {
+              --   ignore = { '*' },
+              --   typeCheckingMode = 'off',
+              -- },
             },
           },
         },

@@ -118,6 +118,11 @@ return {
         automatic_installation = true,
         handlers = {
           function(server_name)
+            -- Skip `jdtls` setup here since it's configured in ftplugin/java.lua.
+            if server_name == 'jdtls' then
+              return
+            end
+
             local server = servers[server_name] or {}
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)

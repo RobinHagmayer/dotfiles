@@ -104,6 +104,8 @@ return {
         ruff = {
           root_dir = vim.fs.root(0, { '.git', 'pyproject.toml', 'setup.py', 'requirements.txt' }),
         },
+
+        clangd = {},
       }
 
       require('mason').setup()

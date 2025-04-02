@@ -10,4 +10,6 @@ export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 # Zig
 export PATH="$PATH:$HOME/dev/zig"
 
+export PATH="$PATH:$HOME/.local/scripts/"
+
 export EDITOR=nvim
